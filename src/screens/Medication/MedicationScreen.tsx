@@ -6,6 +6,7 @@ import {
   ensureNotificationPermission,
   scheduleMedicationReminder,
 } from '../../services/notifications';
+import { syncTodayMedicationSummary } from '../../services/medicationSync';
 import { recordMedicationStatus } from '../../services/storage/medicationStorage';
 import type { MedicationSchedule, MedicationStatus } from '../../types/medication';
 
@@ -51,6 +52,8 @@ export function MedicationScreen() {
       status,
     });
     setConfirmation({ status });
+    // 보호자 대시보드용 요약만 Firestore로 올린다 (개별 기록 전체는 로컬에만 둠).
+    void syncTodayMedicationSummary();
   }, []);
 
   if (confirmation) {

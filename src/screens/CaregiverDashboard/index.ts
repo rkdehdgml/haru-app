@@ -1,2 +1,1 @@
-// 3단계에서 구현 예정: 보호자용 진행 기록 화면
-export {};
+export { CaregiverDashboardEntry } from './CaregiverDashboardEntry';
