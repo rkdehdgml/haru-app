@@ -1,11 +1,44 @@
-// 2단계에서 구현 예정: Firebase 연동 (Firestore + Cloud Messaging).
-//
-// 설계 방향(단계 2에서 확정):
-// - 설정 키는 .env로 분리해서 코드에 노출되지 않게 한다.
-// - 환자의 개별 훈련 기록(문제 풀이 등)은 로컬(SQLite)에 우선 저장하고,
-//   보호자가 봐야 하는 요약 데이터만 Firestore로 동기화한다.
-// - 도움 요청(HelpRequest)은 Firestore 기록 + FCM 푸시로 보호자에게 즉시 전달한다.
-//
-// 1단계에서는 다른 모듈이 참조할 수 있도록 자리만 잡아둔다.
+import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
+import { initializeFirestore, type Firestore } from 'firebase/firestore';
 
-export {};
+// 2단계: Firebase 연동.
+// 설정 값은 코드에 직접 넣지 않고 .env(EXPO_PUBLIC_*)에서 읽는다.
+// .env.example을 복사해 .env를 만들고 Firebase 콘솔(프로젝트 설정 > 일반 > 웹 앱) 값으로 채워야 한다.
+const firebaseConfig = {
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+};
+
+function isConfigured(): boolean {
+  return Object.values(firebaseConfig).every((value) => Boolean(value));
+}
+
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+
+function getFirebaseApp(): FirebaseApp {
+  if (!isConfigured()) {
+    throw new Error(
+      'Firebase 설정이 비어 있습니다. .env.example을 복사해 .env를 만들고 Firebase 콘솔 값을 채워주세요.'
+    );
+  }
+  if (!app) {
+    app = getApps().length > 0 ? getApps()[0]! : initializeApp(firebaseConfig);
+  }
+  return app;
+}
+
+/**
+ * React Native 환경은 Firestore의 기본 gRPC 스트리밍을 지원하지 않으므로
+ * long polling으로 강제해서 병원 와이파이처럼 불안정한 네트워크에서도 동작하게 한다.
+ */
+export function getFirestoreDb(): Firestore {
+  if (!db) {
+    db = initializeFirestore(getFirebaseApp(), { experimentalForceLongPolling: true });
+  }
+  return db;
+}

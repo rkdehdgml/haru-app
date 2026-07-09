@@ -1,4 +1,5 @@
 import { getDb } from './db';
+import { generateId } from '../id';
 import type { MedicationLog, MedicationStatus } from '../../types/medication';
 
 interface MedicationLogRow {
@@ -9,10 +10,6 @@ interface MedicationLogRow {
   status: MedicationStatus;
   recordedAt: string;
   syncedToFirestore: number;
-}
-
-function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 function rowToLog(row: MedicationLogRow): MedicationLog {

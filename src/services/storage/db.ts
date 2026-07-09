@@ -19,6 +19,13 @@ export function getDb(): Promise<SQLite.SQLiteDatabase> {
           recordedAt TEXT NOT NULL,
           syncedToFirestore INTEGER NOT NULL DEFAULT 0
         );
+        CREATE TABLE IF NOT EXISTS help_requests (
+          id TEXT PRIMARY KEY NOT NULL,
+          requestedAt TEXT NOT NULL,
+          roomInfo TEXT,
+          sendStatus TEXT NOT NULL,
+          retryCount INTEGER NOT NULL DEFAULT 0
+        );
       `);
       return db;
     });

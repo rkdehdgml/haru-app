@@ -1,2 +1,1 @@
-// 2단계에서 구현 예정: 도움 요청 (탭 → 3초 카운트다운 → 전송)
-export {};
+export { HelpRequestScreen } from './HelpRequestScreen';
