@@ -1,2 +1,1 @@
-// 5단계에서 구현 예정: 가족 회상, 일화기억, 단기기억 등
-export {};
+export { MemoryTrainingScreen } from './MemoryTrainingScreen';

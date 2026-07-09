@@ -26,6 +26,25 @@ export function getDb(): Promise<SQLite.SQLiteDatabase> {
           sendStatus TEXT NOT NULL,
           retryCount INTEGER NOT NULL DEFAULT 0
         );
+        CREATE TABLE IF NOT EXISTS exercise_results (
+          id TEXT PRIMARY KEY NOT NULL,
+          type TEXT NOT NULL,
+          category TEXT NOT NULL,
+          date TEXT NOT NULL,
+          isCorrect INTEGER NOT NULL,
+          recordedAt TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS family_members (
+          id TEXT PRIMARY KEY NOT NULL,
+          name TEXT NOT NULL,
+          photoUri TEXT NOT NULL,
+          createdAt TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS care_preferences (
+          id TEXT PRIMARY KEY NOT NULL,
+          hospitalName TEXT,
+          doctorName TEXT
+        );
       `);
       return db;
     });

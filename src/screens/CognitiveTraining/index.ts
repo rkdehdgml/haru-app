@@ -1,2 +1,1 @@
-// 5단계에서 구현 예정: 지남력·주의력 훈련
-export {};
+export { CognitiveTrainingScreen } from './CognitiveTrainingScreen';

@@ -38,3 +38,20 @@ export async function getLastActiveAt(): Promise<string | null> {
   if (!snapshot.exists()) return null;
   return (snapshot.data().recordedAt as string) ?? null;
 }
+
+export interface ExerciseAccuracySummaryItem {
+  type: string;
+  correctCount: number;
+  totalCount: number;
+}
+
+export async function getExerciseAccuracySummary(): Promise<ExerciseAccuracySummaryItem[]> {
+  const db = getFirestoreDb();
+  const snapshot = await getDoc(doc(db, 'exerciseAccuracySummary', 'latest'));
+  if (!snapshot.exists()) return [];
+  const byType = (snapshot.data().byType ?? {}) as Record<
+    string,
+    { correctCount: number; totalCount: number }
+  >;
+  return Object.entries(byType).map(([type, stats]) => ({ type, ...stats }));
+}

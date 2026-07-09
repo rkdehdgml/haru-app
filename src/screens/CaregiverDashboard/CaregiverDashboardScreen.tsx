@@ -18,6 +18,9 @@ import {
 } from '../../services/caregiverDashboardData';
 import { getMemoryPrompt, saveMemoryPrompt } from '../../services/memoryPromptSync';
 import type { HelpRequestHistoryItem, MedicationSummaryData } from '../../types/caregiverDashboard';
+import { CarePreferencesCard } from './CarePreferencesCard';
+import { ExerciseAccuracyCard } from './ExerciseAccuracyCard';
+import { FamilyMemberCard } from './FamilyMemberCard';
 
 function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
@@ -147,6 +150,10 @@ export function CaregiverDashboardScreen() {
         />
         {saved && <Text style={styles.savedText}>저장했어요</Text>}
       </DashboardCard>
+
+      <ExerciseAccuracyCard />
+      <CarePreferencesCard />
+      <FamilyMemberCard />
     </ScrollView>
   );
 }
