@@ -45,6 +45,7 @@ export function CaregiverDashboardScreen() {
   const [lastActiveAt, setLastActiveAt] = useState<string | null>(null);
   const [breakfast, setBreakfast] = useState('');
   const [yesterdayEvent, setYesterdayEvent] = useState('');
+  const [rehabSchedule, setRehabSchedule] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -61,6 +62,7 @@ export function CaregiverDashboardScreen() {
     setLastActiveAt(lastActive);
     setBreakfast(prompt?.breakfast ?? '');
     setYesterdayEvent(prompt?.yesterdayEvent ?? '');
+    setRehabSchedule(prompt?.rehabSchedule ?? '');
     setLoading(false);
   }, []);
 
@@ -72,10 +74,10 @@ export function CaregiverDashboardScreen() {
   const handleSavePrompt = useCallback(async () => {
     setSaving(true);
     setSaved(false);
-    await saveMemoryPrompt({ date: todayKey(), breakfast, yesterdayEvent });
+    await saveMemoryPrompt({ date: todayKey(), breakfast, yesterdayEvent, rehabSchedule });
     setSaving(false);
     setSaved(true);
-  }, [breakfast, yesterdayEvent]);
+  }, [breakfast, yesterdayEvent, rehabSchedule]);
 
   if (loading) {
     return (
@@ -129,6 +131,14 @@ export function CaregiverDashboardScreen() {
       </DashboardCard>
 
       <DashboardCard title="기억력 훈련 콘텐츠 입력 (오늘)">
+        <Text style={styles.label}>오늘 재활치료 일정</Text>
+        <TextInput
+          style={styles.textInput}
+          value={rehabSchedule}
+          onChangeText={setRehabSchedule}
+          placeholder="예: 오전 10시 물리치료실"
+          multiline
+        />
         <Text style={styles.label}>오늘 아침 식사</Text>
         <TextInput
           style={styles.textInput}
@@ -148,7 +158,10 @@ export function CaregiverDashboardScreen() {
         <BigButton
           label={saving ? '저장 중...' : '저장'}
           onPress={handleSavePrompt}
-          disabled={saving || (breakfast.length === 0 && yesterdayEvent.length === 0)}
+          disabled={
+            saving ||
+            (breakfast.length === 0 && yesterdayEvent.length === 0 && rehabSchedule.length === 0)
+          }
         />
         {saved && <Text style={styles.savedText}>저장했어요</Text>}
       </DashboardCard>

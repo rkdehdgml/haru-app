@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '../../components/BigButton';
+import { MEDICATION_SCHEDULES } from '../../data/medicationSchedule';
 import { vibrateTap } from '../../services/haptics';
 import {
   ensureNotificationPermission,
@@ -8,15 +9,9 @@ import {
 } from '../../services/notifications';
 import { syncTodayMedicationSummary } from '../../services/medicationSync';
 import { recordMedicationStatus } from '../../services/storage/medicationStorage';
-import type { MedicationSchedule, MedicationStatus } from '../../types/medication';
+import type { MedicationStatus } from '../../types/medication';
 
-// 실제 복약 스케줄 등록/조정은 보호자 대시보드(3단계 이후)에서 다룰 예정.
-// 1단계에서는 화면·저장·알림 배선을 검증하기 위한 샘플 스케줄 하나만 둔다.
-const SAMPLE_SCHEDULE: MedicationSchedule = {
-  id: 'sample-morning',
-  name: '혈압약',
-  scheduledTime: '08:00',
-};
+const SAMPLE_SCHEDULE = MEDICATION_SCHEDULES[0];
 
 type ConfirmationState = { status: MedicationStatus } | null;
 

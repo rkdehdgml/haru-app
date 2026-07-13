@@ -43,6 +43,21 @@ export async function getRecentExposures(days = 3): Promise<ExerciseExposureReco
   return Array.from(byDate.entries()).map(([date, types]) => ({ date, types }));
 }
 
+/** 오늘 카테고리별로 몇 문제 풀었는지 — Home 화면의 오늘 진행 상황 요약에 쓰인다. */
+export async function getTodayResultCounts(): Promise<Record<ExerciseCategory, number>> {
+  const db = await getDb();
+  const today = new Date().toISOString().slice(0, 10);
+  const rows = await db.getAllAsync<{ category: ExerciseCategory; count: number }>(
+    `SELECT category, COUNT(*) AS count FROM exercise_results WHERE date = ? GROUP BY category;`,
+    [today]
+  );
+  const counts: Record<ExerciseCategory, number> = { cognitive: 0, memory: 0 };
+  rows.forEach((row) => {
+    counts[row.category] = row.count;
+  });
+  return counts;
+}
+
 /** 유형별 누적 정답률 — exerciseSelector의 가중치 규칙에 쓰인다. */
 export async function getAccuracyRecords(): Promise<ExerciseAccuracyRecord[]> {
   const db = await getDb();
