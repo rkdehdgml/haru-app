@@ -50,7 +50,7 @@ export function RootNavigator() {
       <Stack.Screen
         name="CaregiverDashboard"
         component={CaregiverDashboardEntry}
-        options={{ title: '보호자용' }}
+        options={{ title: '보호자 대시보드' }}
       />
     </Stack.Navigator>
   );

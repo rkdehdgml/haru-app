@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BigButton } from '../../components/BigButton';
 import { DashboardCard } from '../../components/DashboardCard';
 import { getNextMedicationOccurrence, MEDICATION_SCHEDULES } from '../../data/medicationSchedule';
@@ -19,6 +20,7 @@ function todayKey(): string {
 
 export function HomeScreen() {
   const navigation = useNavigation<HomeNavigation>();
+  const insets = useSafeAreaInsets();
   const [rehabSchedule, setRehabSchedule] = useState('');
   const [cognitiveDone, setCognitiveDone] = useState(0);
   const [memoryDone, setMemoryDone] = useState(0);
@@ -97,14 +99,16 @@ export function HomeScreen() {
           <Text style={styles.trainingCount}>오늘 {handExerciseDone}회 완료</Text>
         </Pressable>
 
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => navigation.navigate('CaregiverDashboard')}
-          style={styles.caregiverLink}
-        >
-          <Text style={styles.caregiverLinkText}>보호자용</Text>
-        </Pressable>
       </ScrollView>
+
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="보호자 대시보드"
+        onPress={() => navigation.navigate('CaregiverDashboard')}
+        style={[styles.caregiverLink, { top: insets.top + 8 }]}
+      >
+        <Text style={styles.caregiverLinkText}>보호자 대시보드</Text>
+      </Pressable>
 
       <View style={styles.helpButtonWrap}>
         <BigButton
@@ -165,16 +169,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#78909C',
   },
+  // 환자가 일상적으로 쓰는 카드/버튼과 멀리 떨어진 우상단 구석에 작고 눈에 덜 띄게 배치해서
+  // 실수로 탭할 가능성을 낮춘다 (환자용 화면에는 없는 보호자 전용 진입점).
   caregiverLink: {
-    alignSelf: 'center',
-    minHeight: 44,
+    position: 'absolute',
+    right: 8,
+    minHeight: 32,
     justifyContent: 'center',
-    paddingHorizontal: 16,
-    marginTop: 8,
+    paddingHorizontal: 8,
   },
   caregiverLinkText: {
-    fontSize: 14,
-    color: '#B0BEC5',
+    fontSize: 12,
+    color: '#CFD8DC',
   },
   helpButtonWrap: {
     paddingHorizontal: 20,
