@@ -1,6 +1,10 @@
 import React, { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import type { RootStackParamList } from '../navigation/RootNavigator';
 import { AnswerRevealCard } from './AnswerRevealCard';
+import { BigButton } from './BigButton';
 
 export interface TrainingSessionRunnerProps<T extends string> {
   types: T[];
@@ -32,6 +36,7 @@ export function TrainingSessionRunner<T extends string>({
     correctAnswerLabel?: string;
   } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const handleSubmit = useCallback(
     (isCorrect: boolean, correctAnswerLabel?: string) => {
@@ -61,6 +66,12 @@ export function TrainingSessionRunner<T extends string>({
         <Text style={styles.completeSubtitle}>
           {types.length}문제 중 {correctCount}문제를 맞혔어요
         </Text>
+        <BigButton
+          label="홈으로"
+          variant="secondary"
+          onPress={() => navigation.popToTop()}
+          style={styles.homeButton}
+        />
       </View>
     );
   }
@@ -113,5 +124,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#455A64',
     textAlign: 'center',
+  },
+  homeButton: {
+    marginTop: 32,
+    minWidth: 160,
   },
 });

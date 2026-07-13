@@ -55,6 +55,17 @@ export function HomeScreen() {
 
   return (
     <View style={styles.screen}>
+      <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="보호자 대시보드"
+          onPress={() => navigation.navigate('CaregiverDashboard')}
+          style={styles.caregiverLink}
+        >
+          <Text style={styles.caregiverLinkText}>보호자 대시보드</Text>
+        </Pressable>
+      </View>
+
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.dateLabel}>{dateLabel}</Text>
 
@@ -100,15 +111,6 @@ export function HomeScreen() {
         </Pressable>
 
       </ScrollView>
-
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="보호자 대시보드"
-        onPress={() => navigation.navigate('CaregiverDashboard')}
-        style={[styles.caregiverLink, { top: insets.top + 8 }]}
-      >
-        <Text style={styles.caregiverLinkText}>보호자 대시보드</Text>
-      </Pressable>
 
       <View style={styles.helpButtonWrap}>
         <BigButton
@@ -169,18 +171,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#78909C',
   },
-  // 환자가 일상적으로 쓰는 카드/버튼과 멀리 떨어진 우상단 구석에 작고 눈에 덜 띄게 배치해서
-  // 실수로 탭할 가능성을 낮춘다 (환자용 화면에는 없는 보호자 전용 진입점).
+  // 환자가 일상적으로 쓰는 카드/버튼 목록과 분리된 별도의 상단 영역에 둬서
+  // 실수로 탭할 가능성을 낮추면서도, 작은 칩 형태로 눈에는 확실히 띄게 만든다.
+  topBar: {
+    paddingHorizontal: 20,
+    paddingBottom: 4,
+  },
   caregiverLink: {
-    position: 'absolute',
-    right: 8,
+    alignSelf: 'flex-start',
     minHeight: 32,
     justifyContent: 'center',
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
+    backgroundColor: '#ECEFF1',
   },
   caregiverLinkText: {
-    fontSize: 12,
-    color: '#CFD8DC',
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#455A64',
   },
   helpButtonWrap: {
     paddingHorizontal: 20,

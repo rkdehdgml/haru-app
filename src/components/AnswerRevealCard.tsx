@@ -8,21 +8,17 @@ export interface AnswerRevealCardProps {
   onNext: () => void;
 }
 
-/**
- * 오답이어도 부정적 피드백 없이 정답만 담백하게 보여준다.
- * "틀렸어요" 같은 표현은 쓰지 않고, 맞았을 때만 살짝 격려하는 정도로만 표현한다.
- */
+/** 맞았는지 틀렸는지 분명히 보여주고, 틀렸을 때는 정답을 함께 알려준다. */
 export function AnswerRevealCard({ isCorrect, correctAnswerLabel, onNext }: AnswerRevealCardProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>{isCorrect ? '✅' : '💡'}</Text>
-      <Text style={styles.message}>
-        {isCorrect
-          ? '정답이에요!'
-          : correctAnswerLabel
-            ? `정답은 "${correctAnswerLabel}"예요`
-            : '정답을 확인했어요'}
-      </Text>
+      <Text style={styles.icon}>{isCorrect ? '✅' : '❌'}</Text>
+      <Text style={styles.message}>{isCorrect ? '정답이에요!' : '틀렸어요'}</Text>
+      {!isCorrect && (
+        <Text style={styles.correctAnswer}>
+          {correctAnswerLabel ? `정답은 "${correctAnswerLabel}"예요` : '정답을 확인했어요'}
+        </Text>
+      )}
       <BigButton label="다음 문제" onPress={onNext} />
     </View>
   );
@@ -40,6 +36,12 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 20,
     fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  correctAnswer: {
+    fontSize: 16,
+    color: '#455A64',
     textAlign: 'center',
     marginBottom: 32,
   },

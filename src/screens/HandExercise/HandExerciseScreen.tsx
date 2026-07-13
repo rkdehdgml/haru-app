@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '../../components/BigButton';
 import { VideoGuidePlayer } from '../../components/VideoGuidePlayer';
+import type { RootStackParamList } from '../../navigation/RootNavigator';
 import { syncTodayHandExerciseSummary } from '../../services/handExerciseSync';
 import { vibrateTap } from '../../services/haptics';
 import { recordHandExerciseCompletion } from '../../services/storage/handExerciseLogStorage';
@@ -11,6 +14,7 @@ import type { HandExerciseSetting } from '../../types/handExercise';
 type Phase = 'loading' | 'exercising' | 'complete';
 
 export function HandExerciseScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [phase, setPhase] = useState<Phase>('loading');
   const [exercises, setExercises] = useState<HandExerciseSetting[]>([]);
   const [index, setIndex] = useState(0);
@@ -73,6 +77,12 @@ export function HandExerciseScreen() {
         {exercises.length > 0 && (
           <Text style={styles.completeSubtitle}>총 {totalRepsToday}회 완료했어요</Text>
         )}
+        <BigButton
+          label="홈으로"
+          variant="secondary"
+          onPress={() => navigation.popToTop()}
+          style={styles.homeButton}
+        />
       </View>
     );
   }
@@ -155,5 +165,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#455A64',
     textAlign: 'center',
+  },
+  homeButton: {
+    marginTop: 32,
+    minWidth: 160,
   },
 });
