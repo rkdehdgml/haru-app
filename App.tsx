@@ -4,12 +4,19 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from './src/components/BigButton';
 import { CaregiverDashboardEntry } from './src/screens/CaregiverDashboard/CaregiverDashboardEntry';
 import { CognitiveTrainingScreen } from './src/screens/CognitiveTraining/CognitiveTrainingScreen';
+import { HandExerciseScreen } from './src/screens/HandExercise/HandExerciseScreen';
 import { HelpRequestScreen } from './src/screens/HelpRequest/HelpRequestScreen';
 import { MedicationScreen } from './src/screens/Medication/MedicationScreen';
 import { MemoryTrainingScreen } from './src/screens/MemoryTraining/MemoryTrainingScreen';
 import { recordAppOpened } from './src/services/activitySync';
 
-type PreviewScreen = 'medication' | 'helpRequest' | 'caregiver' | 'cognitive' | 'memory';
+type PreviewScreen =
+  | 'medication'
+  | 'helpRequest'
+  | 'caregiver'
+  | 'cognitive'
+  | 'memory'
+  | 'handExercise';
 
 const SCREENS: { key: PreviewScreen; label: string }[] = [
   { key: 'medication', label: '복약 (1단계)' },
@@ -17,6 +24,7 @@ const SCREENS: { key: PreviewScreen; label: string }[] = [
   { key: 'caregiver', label: '보호자대시보드 (3단계)' },
   { key: 'cognitive', label: '인지훈련 (5단계)' },
   { key: 'memory', label: '기억력훈련 (5단계)' },
+  { key: 'handExercise', label: '손힘훈련 (6단계)' },
 ];
 
 // 단계별 검증용 임시 진입점 — 7단계에서 Home 화면 + 네비게이션으로 교체하며 이 스위처는 제거할 예정.
@@ -30,7 +38,12 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView horizontal contentContainerStyle={styles.switcher} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal
+        style={styles.switcherScroll}
+        contentContainerStyle={styles.switcher}
+        showsHorizontalScrollIndicator={false}
+      >
         {SCREENS.map((item) => (
           <View key={item.key} style={styles.switcherItem}>
             <BigButton
@@ -49,6 +62,7 @@ export default function App() {
         {screen === 'caregiver' && <CaregiverDashboardEntry />}
         {screen === 'cognitive' && <CognitiveTrainingScreen />}
         {screen === 'memory' && <MemoryTrainingScreen />}
+        {screen === 'handExercise' && <HandExerciseScreen />}
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -59,6 +73,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  switcherScroll: {
+    flexGrow: 0,
   },
   switcher: {
     flexDirection: 'row',

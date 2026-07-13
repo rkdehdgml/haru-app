@@ -45,6 +45,21 @@ export function getDb(): Promise<SQLite.SQLiteDatabase> {
           hospitalName TEXT,
           doctorName TEXT
         );
+        CREATE TABLE IF NOT EXISTS hand_exercise_settings (
+          id TEXT PRIMARY KEY NOT NULL,
+          targetReps INTEGER NOT NULL,
+          enabled INTEGER NOT NULL DEFAULT 1,
+          sortOrder INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS hand_exercise_logs (
+          id TEXT PRIMARY KEY NOT NULL,
+          exerciseId TEXT NOT NULL,
+          exerciseName TEXT NOT NULL,
+          completedReps INTEGER NOT NULL,
+          targetReps INTEGER NOT NULL,
+          date TEXT NOT NULL,
+          recordedAt TEXT NOT NULL
+        );
       `);
       return db;
     });

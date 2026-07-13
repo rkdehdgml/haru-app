@@ -88,15 +88,15 @@ src/
 ---
 
 ## 진행 상황 (다른 PC에서 이어서 작업할 때 여기부터 확인)
-마지막 업데이트: 2026-07-09
+마지막 업데이트: 2026-07-13
 
 - [x] 단계 1 — 프로젝트 스캐폴딩 + 복약 알림 화면 (커밋 `dbe075f`)
 - [x] 단계 2 — Firebase 연동 + 도움 요청(HelpRequest) 화면 (커밋 `ee2eef7`)
 - [x] 단계 3 — 보호자 대시보드(CaregiverDashboard) (커밋 `7a0281e`)
 - [x] 단계 4 — 문제은행 데이터 구조 + 랜덤 선택 알고리즘 (커밋 `e288342`)
 - [x] 단계 5 — 인지훈련 / 기억력훈련 화면 (커밋 `fba41ed`)
-- [ ] 단계 6 — 손 힘 훈련(HandExercise) 화면 ← **다음에 여기부터 진행**
-- [ ] 단계 7 — 홈 화면 통합
+- [x] 단계 6 — 손 힘 훈련(HandExercise) 화면 (아직 커밋 전 — 안내 영상은 `videoUri: null`로 자리만 잡아둔 상태, 실제 촬영본 없음)
+- [ ] 단계 7 — 홈 화면 통합 ← **다음에 여기부터 진행** (지금 있는 "개발용 화면 전환" 임시 스위처를 제거하고 진짜 Home 화면으로 교체)
 
 ### 다른 PC에서 이어서 작업하는 법
 1. `git clone https://github.com/rkdehdgml/haru-app.git` (이미 받아둔 폴더라면 `git pull`)
@@ -106,7 +106,7 @@ src/
 5. 아래 "단계 6" 프롬프트부터 Claude Code CLI에 붙여넣기
 
 ### 참고해야 할 것
-- **Firestore 보안 규칙**: Firebase Auth를 아직 연동하지 않아서, `helpRequests` / `medicationSummaries` / `appActivity` / `memoryPrompts` / `caregiverDevices` / `exerciseAccuracySummary` 컬렉션에 인증 없이 읽고 쓸 수 있도록 콘솔에서 규칙을 열어둬야 지금 코드가 동작함. 실제 서비스 전에는 Auth 붙이고 규칙을 좁혀야 함.
+- **Firestore 보안 규칙**: Firebase Auth를 아직 연동하지 않아서, `helpRequests` / `medicationSummaries` / `appActivity` / `memoryPrompts` / `caregiverDevices` / `exerciseAccuracySummary` / `handExerciseSummaries` 컬렉션에 인증 없이 읽고 쓸 수 있도록 콘솔에서 규칙을 열어둬야 지금 코드가 동작함. 실제 서비스 전에는 Auth 붙이고 규칙을 좁혀야 함.
 - **보호자 대시보드 PIN**은 실제 보안이 아니라 환자가 실수로 들어오는 걸 막는 용도일 뿐 (환자·보호자가 같은 기기를 쓰는 걸 전제로 설계됨 — 가족 사진도 Firebase Storage 없이 기기 로컬에만 저장).
 - **실기기 푸시 알림 테스트**는 Expo Go가 아니라 커스텀 dev client 빌드가 필요함 (SDK 53부터 Expo Go는 원격 푸시 미지원). `eas build --profile development` + `eas credentials`로 FCM 자격증명 연결은 사용자 계정으로 직접 해야 함.
 

@@ -21,6 +21,8 @@ import type { HelpRequestHistoryItem, MedicationSummaryData } from '../../types/
 import { CarePreferencesCard } from './CarePreferencesCard';
 import { ExerciseAccuracyCard } from './ExerciseAccuracyCard';
 import { FamilyMemberCard } from './FamilyMemberCard';
+import { HandExerciseSettingsCard } from './HandExerciseSettingsCard';
+import { HandExerciseSummaryCard } from './HandExerciseSummaryCard';
 
 function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
@@ -152,6 +154,8 @@ export function CaregiverDashboardScreen() {
       </DashboardCard>
 
       <ExerciseAccuracyCard />
+      <HandExerciseSummaryCard />
+      <HandExerciseSettingsCard />
       <CarePreferencesCard />
       <FamilyMemberCard />
     </ScrollView>

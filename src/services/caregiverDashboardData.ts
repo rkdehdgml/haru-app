@@ -1,6 +1,10 @@
 import { collection, doc, getDoc, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { getFirestoreDb } from './firebase';
-import type { HelpRequestHistoryItem, MedicationSummaryData } from '../types/caregiverDashboard';
+import type {
+  HandExerciseSummaryData,
+  HelpRequestHistoryItem,
+  MedicationSummaryData,
+} from '../types/caregiverDashboard';
 
 function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
@@ -37,6 +41,13 @@ export async function getLastActiveAt(): Promise<string | null> {
   const snapshot = await getDoc(doc(db, 'appActivity', 'latest'));
   if (!snapshot.exists()) return null;
   return (snapshot.data().recordedAt as string) ?? null;
+}
+
+export async function getTodayHandExerciseSummary(): Promise<HandExerciseSummaryData | null> {
+  const db = getFirestoreDb();
+  const snapshot = await getDoc(doc(db, 'handExerciseSummaries', todayKey()));
+  if (!snapshot.exists()) return null;
+  return snapshot.data() as HandExerciseSummaryData;
 }
 
 export interface ExerciseAccuracySummaryItem {
